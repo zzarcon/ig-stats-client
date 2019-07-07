@@ -18,6 +18,8 @@ const getDataFromStat = (stats: StatPayload[]): ChartData<chartjs.ChartData> => 
   const labels = stats.map(stat => {
     const date = new Date(stat.date as any);
     return date.toDateString();
+  }).filter((stat, index, arr) => {
+    return arr.indexOf(stat) === index;
   })
   const data = stats.map(stat => stat.followers)
 
