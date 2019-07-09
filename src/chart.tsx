@@ -4,7 +4,7 @@ import {Fetcher} from './fetcher';
 import { Line, ChartData } from 'react-chartjs-2';
 import * as chartjs from 'chart.js';
 import { StatPayload } from './types';
-import {ChartWrapper} from './styled';
+import {ChartWrapper, LineWrapper} from './styled';
 
 export interface ChartProps {
   username: string;
@@ -14,20 +14,26 @@ export interface ChartState {
   stats?: StatPayload[];
 }
 
+const pad = (num: number): string => (`${num}` as any).padStart(2, '0')
+const getHumanDate = (dateText: Date): string => {
+  const date = new Date(dateText as any);
+
+  return `${pad(date.getDate())}-${pad(date.getMonth() + 1)}`;
+}
 const getDataFromStat = (stats: StatPayload[]): ChartData<chartjs.ChartData> => {
-  const labels = stats.map(stat => {
-    const date = new Date(stat.date as any);
-    return date.toDateString();
-  }).filter((stat, index, arr) => {
-    return arr.indexOf(stat) === index;
+  const uniqueStats = stats.filter(stat => {
+    return !!stat;
+  });
+  const labels = uniqueStats.map(stat => {
+    return getHumanDate(stat.date)
   })
-  const data = stats.map(stat => stat.followers)
+  const data = uniqueStats.map(stat => stat.followers)
 
   return {
     labels,
     datasets: [
       {
-        label: stats[0].username,
+        label: 'followers',
         fill: false,
         lineTension: 0.1,
         // backgroundColor: 'rgba(75,192,192,0.4)',
@@ -80,9 +86,11 @@ export class Chart extends Component<ChartProps, ChartState>{
     return (
       <ChartWrapper>
         <h1>{username}</h1>
-        <Line 
-          data={data}
-        />
+        <LineWrapper>
+          <Line 
+            data={data}
+          />
+        </LineWrapper>
       </ChartWrapper>
     )
   }

@@ -3,7 +3,6 @@ import styled, {injectGlobal} from 'styled-components';
 injectGlobal`
   body {
     font-family: Helvetica;
-    background-color: #D8D1F5;
   }
 
   * {
