@@ -1,16 +1,17 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {Fetcher} from './fetcher';
 import { Line, ChartData } from 'react-chartjs-2';
 import * as chartjs from 'chart.js';
+import Spinner from '@atlaskit/spinner'
+import {Fetcher} from './fetcher';
 import { StatPayload } from './types';
-import {ChartWrapper, LineWrapper} from './styled';
+import {ChartWrapper, LineWrapper, LineChartPlaceholder} from './styled';
 
-export interface ChartProps {
+export interface LineChartProps {
   username: string;
 } 
 
-export interface ChartState {
+export interface LineChartState {
   stats?: StatPayload[];
 }
 
@@ -57,8 +58,8 @@ const getDataFromStat = (stats: StatPayload[]): ChartData<chartjs.ChartData> => 
   };
 }
 
-export class Chart extends Component<ChartProps, ChartState>{
-  state: ChartState = {
+export class LineChart extends Component<LineChartProps, LineChartState>{
+  state: LineChartState = {
 
   }
 
@@ -74,9 +75,10 @@ export class Chart extends Component<ChartProps, ChartState>{
     const {stats} = this.state;
     if (!stats) {
       return (
-        <div>
+        <LineChartPlaceholder>
+          <Spinner />
           Loading stats...
-        </div>
+        </LineChartPlaceholder>
       )
     }
 

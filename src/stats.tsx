@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {Chart} from './chart';
+import {LineChart} from './lineChart';
 
 export interface StatsProps {
   
@@ -16,7 +16,7 @@ export class Stats extends Component<StatsProps, StatsState> {
   renderCharts = () => {
     return usernames.map(username => {
       return (
-        <Chart key={username} username={username} />
+        <LineChart key={username} username={username} />
       )
     })
   }

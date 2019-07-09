@@ -15,3 +15,10 @@ export const ChartWrapper = styled.div`
 export const LineWrapper = styled.div`
   width: 1000px;
 `
+
+export const LineChartPlaceholder = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px;
+`;
