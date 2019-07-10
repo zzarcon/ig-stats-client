@@ -1,5 +1,6 @@
 import {StatPayload} from './types'
 
+const statsCache: Map<string, Promise<StatPayload[]>> = new Map();
 export class Fetcher {
   host: string;
 
@@ -8,9 +9,19 @@ export class Fetcher {
   }
 
   async getStats(username: string): Promise<StatPayload[]> {
-    const url = `${this.host}/stats/${username}`;
-    const response = await (await fetch(url)).json();
+    const existingStats = statsCache.get(username);
+    if (existingStats) {
+      return existingStats;
+    }
 
-    return response;
+    const deferredStats = new Promise<StatPayload[]>(async resolve => {
+      const url = `${this.host}/stats/${username}`;
+      const response = await (await fetch(url)).json();
+
+      resolve(response);
+    })
+
+    statsCache.set(username, deferredStats);
+    return deferredStats;
   }
 }

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {LineChart} from './lineChart';
+import { PieChart } from './pieChart';
 
 export interface StatsProps {
   
@@ -21,10 +22,18 @@ export class Stats extends Component<StatsProps, StatsState> {
     })
   }
 
+  renderPieChart = () => {
+    return (
+      <PieChart usernames={usernames} />
+    )
+  }
+
   render() {
     return (
       <div>
         {this.renderCharts()}
+        <hr />
+        {this.renderPieChart()}
       </div>
     );
   }

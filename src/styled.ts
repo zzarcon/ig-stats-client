@@ -22,3 +22,14 @@ export const LineChartPlaceholder = styled.div`
   align-items: center;
   margin: 30px;
 `;
+
+export const PieWrapper = styled.div`
+  width: 1000px;
+`;
+
+export const PieChartWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
