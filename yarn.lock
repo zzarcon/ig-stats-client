@@ -2,6 +2,34 @@
 # yarn lockfile v1
 
 
+"@atlaskit/analytics-next@^5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@atlaskit/analytics-next/-/analytics-next-5.0.2.tgz#e440cdb5de33afb17706da8f3f1f131ad2e35ca8"
+  integrity sha512-nzbTQeL1lMy2KapLAQzhZulECDJJDWqcj7l8eapGQuKwMG5aT4SR48kdEuXDHxjuoyCNEBi7/xr8x27GzQ3rCw==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    prop-types "^15.5.10"
+
+"@atlaskit/icon@^19.0.0":
+  version "19.0.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-19.0.1.tgz#7ab35f14a9c0bdbc8e026f5e4e09fbe6aa8e398a"
+  integrity sha512-iH/6EqQhxmGNhEvUfJuv0cy+sij8ucK0Ezt/p1O5alTrlg1U2uzrR6JsoflXkwRKxdBdNwLvp9Kdup5WI2uhUQ==
+  dependencies:
+    "@atlaskit/theme" "^9.1.1"
+    tslib "^1.9.3"
+    uuid "^3.1.0"
+
+"@atlaskit/radio@^3.0.7":
+  version "3.0.7"
+  resolved "https://registry.yarnpkg.com/@atlaskit/radio/-/radio-3.0.7.tgz#c6449156f257b00528d96d390b865eaa489a6080"
+  integrity sha512-DREbeQxUMOuOQUYJpvpC99CzBy4Yg2U3acG/u1mBe2ID4fyO4QzhDA0kWxDMO8YYLpAYrv5wNc7BScnb47AgNA==
+  dependencies:
+    "@atlaskit/analytics-next" "^5.0.2"
+    "@atlaskit/icon" "^19.0.0"
+    "@atlaskit/theme" "^9.1.1"
+    "@babel/runtime" "^7.0.0"
+    tslib "^1.9.3"
+
 "@atlaskit/spinner@^12.0.3":
   version "12.0.3"
   resolved "https://registry.yarnpkg.com/@atlaskit/spinner/-/spinner-12.0.3.tgz#4708f31595ce531c1cff317fb8c7fccb03a58475"
@@ -12,7 +40,7 @@
     react-transition-group "^2.2.1"
     tslib "^1.9.3"
 
-"@atlaskit/theme@^9.0.0":
+"@atlaskit/theme@^9.0.0", "@atlaskit/theme@^9.1.1":
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-9.1.1.tgz#c7377a29dce89191671bd78e1aaa21dfa2a78b68"
   integrity sha512-VdKaThfdusSJRDX8gdlZxLNOJPf+3v8khk1+F7NAEktfkmk+VMGYrgeav/QJL6eXx0dgjRYq+unI4gTQYQpA/Q==

@@ -1,8 +1,9 @@
 import * as React from 'react';
-import {Component} from 'react';
-import { Line, ChartData } from 'react-chartjs-2';
+import {Component, SyntheticEvent} from 'react';
+import { Line, Bar, ChartData } from 'react-chartjs-2';
 import * as chartjs from 'chart.js';
 import Spinner from '@atlaskit/spinner'
+import { RadioGroup } from '@atlaskit/radio';
 import {Fetcher} from './fetcher';
 import { StatPayload } from './types';
 import {ChartWrapper, LineWrapper, LineChartPlaceholder} from './styled';
@@ -12,6 +13,7 @@ export interface LineChartProps {
 } 
 
 export interface LineChartState {
+  chartType: 'line' | 'daily';
   stats?: StatPayload[];
 }
 
@@ -58,9 +60,14 @@ const getDataFromStat = (stats: StatPayload[]): ChartData<chartjs.ChartData> => 
   };
 }
 
+const chartTypeOptions = [
+  { name: 'color', value: 'line', label: 'Historic' },
+  { name: 'color', value: 'daily', label: 'Daily' },
+]
+
 export class LineChart extends Component<LineChartProps, LineChartState>{
   state: LineChartState = {
-
+    chartType: 'line'
   }
 
   async componentDidMount() {
@@ -71,8 +78,70 @@ export class LineChart extends Component<LineChartProps, LineChartState>{
     this.setState({stats})
   }
 
+  renderLine = (stats: StatPayload[]) => {
+    const data = getDataFromStat(stats);
+
+    return (
+      <LineWrapper>
+        <Line 
+          data={data}
+        />
+      </LineWrapper>
+    )
+  }
+
+  renderDaily = (stats: StatPayload[]) => {
+    const uniqueStats = stats.filter((currentStat, index) => {
+      const currentHumanDate = getHumanDate(currentStat.date);
+      const firstStat = (stats as any).find((s: StatPayload) => getHumanDate(s.date) === currentHumanDate)
+      const firstIndex = stats.indexOf(firstStat);
+
+      return firstIndex === index;
+    });
+    const labels = uniqueStats.map(stat => {
+      return getHumanDate(stat.date)
+    })
+    const data = uniqueStats.map((stat, index, all) => {
+      if (index === 0) return 0;
+
+      console.log(stat.followers, all[index - 1].followers)
+      return stat.followers - all[index - 1].followers;
+    });
+    const barData = {
+      labels,
+      datasets: [
+        {
+          label: 'Daily followers',
+          backgroundColor: 'rgba(255,99,132,0.2)',
+          borderColor: 'rgba(255,99,132,1)',
+          borderWidth: 1,
+          hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+          hoverBorderColor: 'rgba(255,99,132,1)',
+          data
+        }
+      ]
+    };
+
+    return (
+      <Bar
+        data={barData}
+        width={100}
+        height={50}
+        options={{
+          maintainAspectRatio: false
+        }}
+      />
+    )
+  }
+
+  onChartTypeChange = (event: SyntheticEvent<HTMLInputElement>) => {
+    const chartType: any = event.currentTarget.value;
+
+    this.setState({chartType});
+  }
+
   render() {
-    const {stats} = this.state;
+    const {stats, chartType} = this.state;
     if (!stats) {
       return (
         <LineChartPlaceholder>
@@ -83,16 +152,17 @@ export class LineChart extends Component<LineChartProps, LineChartState>{
     }
 
     const {username} = this.props;
-    const data = getDataFromStat(stats);
+    const content = chartType === 'line' ? this.renderLine(stats) : this.renderDaily(stats);
 
     return (
       <ChartWrapper>
         <h1>{username}</h1>
-        <LineWrapper>
-          <Line 
-            data={data}
-          />
-        </LineWrapper>
+        <RadioGroup
+          options={chartTypeOptions}
+          onChange={this.onChartTypeChange}
+          defaultValue={chartTypeOptions[0].value}
+        />
+        {content}
       </ChartWrapper>
     )
   }
