@@ -14,6 +14,7 @@ export interface LineChartProps {
 
 export interface LineChartState {
   chartType: 'line' | 'daily';
+  status: 'loading' | 'loaded' | 'error';
   stats?: StatPayload[];
 }
 
@@ -67,15 +68,19 @@ const chartTypeOptions = [
 
 export class LineChart extends Component<LineChartProps, LineChartState>{
   state: LineChartState = {
-    chartType: 'line'
+    chartType: 'line',
+    status: 'loading'
   }
 
   async componentDidMount() {
     const {username} = this.props;
     const fetcher = new Fetcher();
-    const stats = await fetcher.getStats(username);
-
-    this.setState({stats})
+    try {
+      const stats = await fetcher.getStats(username);
+      this.setState({status:'loaded', stats})
+    } catch (e) {
+      this.setState({status: 'error'})
+    }
   }
 
   renderLine = (stats: StatPayload[]) => {
@@ -104,7 +109,6 @@ export class LineChart extends Component<LineChartProps, LineChartState>{
     const data = uniqueStats.map((stat, index, all) => {
       if (index === 0) return 0;
 
-      console.log(stat.followers, all[index - 1].followers)
       return stat.followers - all[index - 1].followers;
     });
     const barData = {
@@ -140,15 +144,31 @@ export class LineChart extends Component<LineChartProps, LineChartState>{
     this.setState({chartType});
   }
 
+  renderLoading = () => {
+    return (
+      <LineChartPlaceholder>
+        <Spinner />
+        Loading stats...
+      </LineChartPlaceholder>
+    );
+  }
+
+  renderError = () => {
+    const {username} = this.props;
+    return (
+      <div>
+        Error loading stats for {username}
+      </div>
+    )
+  }
+
   render() {
-    const {stats, chartType} = this.state;
-    if (!stats) {
-      return (
-        <LineChartPlaceholder>
-          <Spinner />
-          Loading stats...
-        </LineChartPlaceholder>
-      )
+    const {status, stats, chartType} = this.state;
+    if (status === 'loading') {
+      return this.renderLoading();
+    }
+    if (status === 'error' || !stats) {
+      return this.renderError();
     }
 
     const {username} = this.props;

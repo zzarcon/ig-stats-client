@@ -1,4 +1,5 @@
 import {StatPayload} from './types'
+import { getCurrentToken } from './token';
 
 const statsCache: Map<string, Promise<StatPayload[]>> = new Map();
 export class Fetcher {
@@ -14,11 +15,15 @@ export class Fetcher {
       return existingStats;
     }
 
-    const deferredStats = new Promise<StatPayload[]>(async resolve => {
-      const url = `${this.host}/stats/${username}`;
-      const response = await (await fetch(url)).json();
-
-      resolve(response);
+    const deferredStats = new Promise<StatPayload[]>(async (resolve, reject) => {
+      const token = getCurrentToken();
+      const url = `${this.host}/stats/${username}?token=${token}`;
+      try {
+        const response = await (await fetch(url)).json();
+        resolve(response);
+      } catch (e) {
+        reject(e)
+      }
     })
 
     statsCache.set(username, deferredStats);

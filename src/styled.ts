@@ -33,3 +33,16 @@ export const PieChartWrapper = styled.div`
   justify-content: center;
   flex-direction: column;
 `;
+
+export const LoginWrapper = styled.div`
+  display: flex;
+  width: 100vw;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  > button {
+    margin-left: 10px;
+  }
+`;
