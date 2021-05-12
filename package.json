@@ -22,7 +22,7 @@
     "@atlaskit/textfield": "^2.0.3",
     "@types/chart.js": "^2.7.55",
     "@types/react-chartjs-2": "^2.5.7",
-    "chart.js": "^2.8.0",
+    "chart.js": "^2.9.4",
     "react-chartjs-2": "^2.7.6",
     "ts-react-toolbox": "^0.2.2"
   },
